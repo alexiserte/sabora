@@ -2,6 +2,7 @@ package com.sabora.server.Controllers;
 
 import com.sabora.server.DTOs.FormAnswerDTO;
 import com.sabora.server.Services.FormAnswerServices;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class AnswerController {
         } catch (Exception e) {
             log.severe("Error answering form with id: " + id);
             log.severe(e.getMessage());
-            return ResponseEntity.internalServerError().build();
+            return new ResponseEntity<>(e.getStackTrace(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
