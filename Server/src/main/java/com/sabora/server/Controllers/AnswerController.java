@@ -1,6 +1,7 @@
 package com.sabora.server.Controllers;
 
 import com.sabora.server.DTOs.FormAnswerDTO;
+import com.sabora.server.DTOs.SimpleDTO;
 import com.sabora.server.Services.FormAnswerServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class AnswerController {
         try {
             log.info("Answering form with id: " + id);
             formAnswerServices.answerForm(formAnswerDTO);
-            return ResponseEntity.ok("Respuestas almacenadas correctamente!");
+            return ResponseEntity.ok(SimpleDTO.builder().message("Respuestas almacenadas correctamente").build());
         } catch (Exception e) {
             log.severe("Error answering form with id: " + id);
             log.severe(e.getMessage());
