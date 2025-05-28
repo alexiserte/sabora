@@ -19,5 +19,6 @@ public class ExperienceDTO {
     private String sound;
     private String food;
     private List<String> sounds;
+    private Integer userId;
 
 }

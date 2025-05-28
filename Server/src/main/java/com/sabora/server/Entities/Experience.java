@@ -44,4 +44,7 @@ public class Experience {
 
     @OneToMany(mappedBy = "experience")
     private List<ExperienceSound> sounds = new ArrayList<>();
+
+    @Column(name = "id_usuario", nullable = false)
+    private Integer userId;
 }
