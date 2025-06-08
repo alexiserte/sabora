@@ -38,7 +38,7 @@ public class ExperienceServicesImplementation implements ExperienceServices {
         experience.setScenario(scenarioRepository.findByName(experienceDTO.getScenario()));
         experience.setSound(soundRepository.findByName(experienceDTO.getSound()));
         List<Food> foods = foodRepository.findAll().stream()
-                .filter(food -> food.getName().equals(experienceDTO.getFood()))
+                .filter(food -> experienceDTO.getFood().contains(food.getName()))
                 .toList();
         experience.setFood(foods);
         experience.setUserId(experienceDTO.getUserId());
