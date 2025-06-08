@@ -38,9 +38,13 @@ public class Experience {
     @JoinColumn(name = "id_sonido", referencedColumnName = "id", nullable = false)
     private Sound sound;
 
-    @ManyToOne
-    @JoinColumn(name = "id_alimento", referencedColumnName = "id", nullable = false)
-    private Food food;
+    @ManyToMany
+    @JoinTable(
+            name = "experience_alimentos",
+            joinColumns = @JoinColumn(name = "id_experiencia"),
+            inverseJoinColumns = @JoinColumn(name = "id_alimento")
+    )
+    private List<Food> food;
 
     @OneToMany(mappedBy = "experience")
     private List<ExperienceSound> sounds = new ArrayList<>();

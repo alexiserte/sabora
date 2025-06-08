@@ -1,10 +1,7 @@
 package com.sabora.server.Services.Implementation;
 
 import com.sabora.server.DTOs.ExperienceDTO;
-import com.sabora.server.Entities.Cliente;
-import com.sabora.server.Entities.Experience;
-import com.sabora.server.Entities.ExperienceSound;
-import com.sabora.server.Entities.Sound;
+import com.sabora.server.Entities.*;
 import com.sabora.server.Repositories.*;
 import com.sabora.server.Services.ExperienceServices;
 import org.slf4j.Logger;
@@ -40,11 +37,14 @@ public class ExperienceServicesImplementation implements ExperienceServices {
         experience.setClient((Cliente) userRepository.findByUsername(experienceDTO.getClient()));
         experience.setScenario(scenarioRepository.findByName(experienceDTO.getScenario()));
         experience.setSound(soundRepository.findByName(experienceDTO.getSound()));
-        experience.setFood(foodRepository.findByName(experienceDTO.getFood()));
+        List<Food> foods = foodRepository.findAll().stream()
+                .filter(food -> food.getName().equals(experienceDTO.getFood()))
+                .toList();
+        experience.setFood(foods);
         experience.setUserId(experienceDTO.getUserId());
         experienceRepository.save(experience);
 
-        List<Experience> savedExperience = experienceRepository.findByClientAndScenarioAndSoundAndFood(experience.getClient(), experience.getScenario(), experience.getSound(), experience.getFood());
+        List<Experience> savedExperience = experienceRepository.findByClientAndScenarioAndSoundAndAllFoods(experience.getClient(), experience.getScenario(), experience.getSound(), experience.getFood(),experience.getFood().size());
         ExperienceDTO savedExperienceDTO = experienceDTO;
         savedExperienceDTO.setId(savedExperience.get(savedExperience.size() - 1).getId());;
         return savedExperienceDTO;
@@ -89,7 +89,10 @@ public class ExperienceServicesImplementation implements ExperienceServices {
         experienceDTO.setClient(experience.getClient().getUsername());
         experienceDTO.setScenario(experience.getScenario().getName());
         experienceDTO.setSound(experience.getSound().getName());
-        experienceDTO.setFood(experience.getFood().getName());
+        List<String> foodNames = experience.getFood().stream()
+                .map(Food::getName)
+                .toList();
+        experienceDTO.setFood(foodNames);
         return experienceDTO;
     }
 }
