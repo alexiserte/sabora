@@ -17,7 +17,7 @@ public class ExperienceDTO {
     private String client;
     private String scenario;
     private String sound;
-    private String food;
+    private List<String> food;
     private List<String> sounds;
     private Integer userId;
 
