@@ -11,4 +11,5 @@ import java.util.List;
 public class ExcelStatisticsRequest {
     private List<FormData> data;
     private FormStatistics stats;
+    private String username;
 }

@@ -10,6 +10,7 @@ import org.apache.poi.xddf.usermodel.chart.*;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class ExcelGenerationService {
     private final byte[] saboraYellowByte = new byte[]{(byte)0xBF, (byte)0xFF, (byte)0x0C};
     XSSFColor saboraYellow = new XSSFColor(saboraYellowByte, null);
 
-    public void generateGeneralSummaryExcel(ExcelStatisticsRequest data, String outputPath) throws IOException {
+    public byte[] generateGeneralSummaryExcel(ExcelStatisticsRequest data) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Resumen General");
 
@@ -49,8 +50,9 @@ public class ExcelGenerationService {
 
             autoSizeColumns(sheet, 6);
 
-            try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
-                workbook.write(fileOut);
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                workbook.write(bos);
+                return bos.toByteArray();
             }
         }
     }
@@ -454,7 +456,7 @@ public class ExcelGenerationService {
                 .build();
 
         String outputPath = String.format("src/main/resources/generated-excels/resumen_general-%s.xlsx", LocalDateTime.now());
-        service.generateGeneralSummaryExcel(data, outputPath);
+        service.generateGeneralSummaryExcel(data);
 
         System.out.println("✅ Excel generado en: " + outputPath);
     }
